@@ -1,6 +1,6 @@
 = Active Merchant for Mollie iDeal
 
-This gem contains an extension of ActiveMerchant [http://www.activemerchant.org/] with support for the Dutch payment service provider Mollie [http://www.mollie.nl]. The extension allows you to make iDeal transactions based on the Mollie iDeal API.
+This gem contains an extension of ActiveMerchant [http://www.activemerchant.org] with support for the Dutch payment service provider Mollie [http://www.mollie.nl]. The extension allows you to make iDeal transactions based on the Mollie iDeal API.
 
 == Installation
 
@@ -16,7 +16,7 @@ You can also install as a Rails plugin:
 
 == Usage
 
-Before you start using this gem, please read the API documentation of Mollie on their website: https://www.mollie.nl/beheer/betaaldiensten/documentatie/ideal/. Make sure you have a Mollie account and know your 'partner id'.
+Before you start using this gem, please read the API documentation of Mollie on their website: https://www.mollie.nl/beheer/betaaldiensten/documentatie/ideal. Make sure you have a Mollie account and know your 'partner id'.
 
 === Create a new purchase
 
@@ -53,4 +53,4 @@ After the user returns on your website or Mollie requests you report URL, you sh
 
 == Maintainer
 
-This gem is based on ActiveMerchant and abstracted from the MoneyBird [http://www.moneybird.nl] project.
+This gem is based on ActiveMerchant and abstracted from the MoneyBird [http://www.moneybird.nl] project. For more information ask the MoneyBird team via mailto:info@moneybird.com
