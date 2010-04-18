@@ -13,18 +13,17 @@ begin
     gem.files =  FileList["[A-Z]*", "{bin,generators,lib,test}/**/*"]
     gem.add_dependency 'active_merchant'
     gem.add_dependency 'hpricot'
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
+
+require 'spec/rake/spectask'
+desc "Run all examples"
+Spec::Rake::SpecTask.new('spec') do |t|
+  t.spec_files = FileList['spec/*_spec.rb']
 end
 
 begin
@@ -40,9 +39,7 @@ rescue LoadError
   end
 end
 
-task :test => :check_dependencies
-
-task :default => :test
+task :default => :spec
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
