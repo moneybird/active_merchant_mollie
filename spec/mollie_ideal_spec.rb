@@ -97,9 +97,9 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
       }.should  raise_error(ArgumentError)
     end
     
-    it "should not allow a purchase with less than 1,80EUR" do
+    it "should not allow a purchase with less than 1,18EUR" do
       lambda {
-        @gateway.setup_purchase(179, {
+        @gateway.setup_purchase(117, {
           :return_url       => @return_url,
           :report_url       => @report_url,
           :bank_id          => @bank_id,
@@ -173,6 +173,9 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
       
       @details_response = @gateway.details_for(@token)
       @details_response.success?.should be_true
+      @details_response.consumerAccount.should == "P001234567"
+      @details_response.consumerCity.should == "Amsterdam"
+      @details_response.consumerName.should == "Hr J Janssen"
     end
     
     it "should return information about a successfull transaction" do

@@ -1,4 +1,4 @@
-require "hpricot"
+require "nokogiri"
 
 module ActiveMerchant
   module Billing
@@ -15,7 +15,7 @@ module ActiveMerchant
       def setup_purchase(money, options)
         requires!(options, :return_url, :report_url, :bank_id, :description)
         
-        raise ArgumentError.new("Amount should be at least 1,80EUR") if money < 180
+        raise ArgumentError.new("Amount should be at least EUR 1,18") if money < 118
         
         @response = build_response_fetch(commit("fetch", {
           :amount         => money,
@@ -49,15 +49,20 @@ module ActiveMerchant
       end
       
       def build_response_fetch(response)
+
+        # hack because Mollie does not escape & chars
+        response.gsub!("&", "&amp;")
+
         vars = {}
-        doc = Hpricot.XML(response)
         success = false
-        if doc.search("response/item").size > 0
-          errorcode = doc.at('response/item/errorcode').inner_text
-          message = doc.at('response/item/message').inner_text + " (#{errorcode})"
-        elsif doc.search("response/order").size > 0
+        
+        doc = Nokogiri.XML(response)
+        if doc.search("//response/item").size > 0
+          errorcode = doc.at('//response/item/errorcode').inner_text
+          message = doc.at('//response/item/message').inner_text + " (#{errorcode})"
+        elsif doc.search("//response/order").size > 0
           vars = {}
-          resp = doc.at('response/order')
+          resp = doc.at('//response/order')
           if resp && resp.at('amount') && resp.at('transaction_id') && resp.at('URL')
             vars[:amount] = resp.at('amount').inner_text
             vars[:transaction_id] = resp.at('transaction_id').inner_text
@@ -69,16 +74,29 @@ module ActiveMerchant
       end
       
       def build_response_check(response)
-        doc = Hpricot.XML(response)
+        
+        # hack because Mollie does not escape & chars
+        response.gsub!("&", "&amp;")
+        
+        vars = {}
         success = false
-        if doc.search("response/item").size > 0
-          errorcode = doc.at('response/item/errorcode').inner_text
-          message = doc.at('response/item/message').inner_text + " (#{errorcode})"      
-        elsif doc.search("response/order").size > 0
-          resp = doc.at('response/order')
+
+        doc = Nokogiri.XML(response)
+        if doc.search("//response/item").size > 0
+          errorcode = doc.at('//response/item/errorcode').inner_text
+          message = doc.at('//response/item/message').inner_text + " (#{errorcode})"      
+        elsif doc.search("//response/order").size > 0
+          resp = doc.at('//response/order')
           success = resp && resp.at('payed') && resp.at('payed').inner_text.downcase == "true"
+          
+          resp = doc.at("//response/order/consumer")
+          if resp && resp.at('consumerAccount') && resp.at('consumerName')
+            vars[:consumerAccount]  = resp.at('consumerAccount').inner_text
+            vars[:consumerCity]     = resp.at('consumerCity').inner_text
+            vars[:consumerName]     = resp.at('consumerName').inner_text
+          end
         end
-        MollieIdealCheckResponse.new(success, message)
+        MollieIdealCheckResponse.new(success, message, vars)
       end
       
     end
