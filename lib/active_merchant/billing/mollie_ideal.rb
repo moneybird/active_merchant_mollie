@@ -45,13 +45,12 @@ module ActiveMerchant
         url   = URL + "?a=#{action}&#{parameters.collect { |k,v| "#{k}=#{v}" }.join("&") }"
         uri   = URI.parse(url)
         http  = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = (uri.scheme == 'https')
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE if ActiveMerchant::Billing::Base.test?
         http.get(uri.request_uri).body
       end
       
       def build_response_fetch(response)
-
-        # hack because Mollie does not escape & chars
-        response.gsub!("&", "&amp;")
 
         vars = {}
         success = false
@@ -74,9 +73,6 @@ module ActiveMerchant
       end
       
       def build_response_check(response)
-        
-        # hack because Mollie does not escape & chars
-        response.gsub!("&", "&amp;")
         
         vars = {}
         success = false

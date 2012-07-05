@@ -25,6 +25,7 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
     
     it "should create a new purchase via the Mollie API" do
       http_mock = mock(Net::HTTP)      
+      http_mock.should_receive(:use_ssl=).once.with(true)
       Net::HTTP.should_receive(:new).with("secure.mollie.nl", 443).and_return(http_mock)
       
       response_mock = mock(Net::HTTPResponse)
@@ -34,7 +35,7 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
               <transaction_id>482d599bbcc7795727650330ad65fe9b</transaction_id>
               <amount>123</amount>
               <currency>EUR</currency>
-              <URL>https://mijn.postbank.nl/internetbankieren/SesamLoginServlet?sessie=ideal&trxid=003123456789123&random=123456789abcdefgh</URL>
+              <URL>https://ideal.ing.nl/internetbankieren/SesamLoginServlet?sessie=ideal&amp;trxid=0030000123497790&amp;random=bac53c612328151</URL>
               <message>Your iDEAL-payment has succesfuly been setup. Your customer should visit the given URL to make the payment</message>
           </order>
       </response>')
@@ -54,7 +55,7 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
       })
       
       @response.token.should == "482d599bbcc7795727650330ad65fe9b"
-      @gateway.redirect_url_for(@response.token).should == "https://mijn.postbank.nl/internetbankieren/SesamLoginServlet?sessie=ideal&trxid=003123456789123&random=123456789abcdefgh"
+      @gateway.redirect_url_for(@response.token).should == "https://ideal.ing.nl/internetbankieren/SesamLoginServlet?sessie=ideal&trxid=0030000123497790&random=bac53c612328151"
     end
     
     it "should not allow a purchase without a return url" do
@@ -110,6 +111,7 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
     
     it "should return information about the error Mollie is throwing" do
       http_mock = mock(Net::HTTP)      
+      http_mock.should_receive(:use_ssl=).once.with(true)
       Net::HTTP.should_receive(:new).with("secure.mollie.nl", 443).and_return(http_mock)
       
       response_mock = mock(Net::HTTPResponse)
@@ -145,6 +147,7 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
     
     it "should return information about a successfull transaction" do
       http_mock = mock(Net::HTTP)      
+      http_mock.should_receive(:use_ssl=).once.with(true)
       Net::HTTP.should_receive(:new).with("secure.mollie.nl", 443).and_return(http_mock)
       
       response_mock = mock(Net::HTTPResponse)
@@ -180,6 +183,7 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
     
     it "should return information about a successfull transaction" do
       http_mock = mock(Net::HTTP)      
+      http_mock.should_receive(:use_ssl=).once.with(true)
       Net::HTTP.should_receive(:new).with("secure.mollie.nl", 443).and_return(http_mock)
       
       response_mock = mock(Net::HTTPResponse)
@@ -207,6 +211,7 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
     
     it "should return information about the error Mollie is throwing" do
       http_mock = mock(Net::HTTP)      
+      http_mock.should_receive(:use_ssl=).once.with(true)
       Net::HTTP.should_receive(:new).with("secure.mollie.nl", 443).and_return(http_mock)
       
       response_mock = mock(Net::HTTPResponse)
