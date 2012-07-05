@@ -176,9 +176,9 @@ describe "Mollie iDeal implementation for ActiveMerchant" do
       
       @details_response = @gateway.details_for(@token)
       @details_response.success?.should be_true
-      @details_response.consumerAccount.should == "P001234567"
-      @details_response.consumerCity.should == "Amsterdam"
-      @details_response.consumerName.should == "Hr J Janssen"
+      @details_response.consumer_account.should == "P001234567"
+      @details_response.consumer_city.should == "Amsterdam"
+      @details_response.consumer_name.should == "Hr J Janssen"
     end
     
     it "should return information about a successfull transaction" do

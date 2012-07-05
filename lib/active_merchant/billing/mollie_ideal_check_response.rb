@@ -2,16 +2,16 @@ module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     class MollieIdealCheckResponse < Response
       
-      def consumerAccount
-        @params['consumerAccount']
+      def consumer_account
+        @params['consumer_account']
       end
       
-      def consumerCity
-        @params['consumerCity']
+      def consumer_city
+        @params['consumer_city']
       end
       
-      def consumerName
-        @params['consumerName']
+      def consumer_name
+        @params['consumer_name']
       end
       
     end

@@ -87,9 +87,9 @@ module ActiveMerchant
           
           resp = doc.at("//response/order/consumer")
           if resp && resp.at('consumerAccount') && resp.at('consumerName')
-            vars[:consumerAccount]  = resp.at('consumerAccount').inner_text
-            vars[:consumerCity]     = resp.at('consumerCity').inner_text
-            vars[:consumerName]     = resp.at('consumerName').inner_text
+            vars[:consumer_account]  = resp.at('consumerAccount').inner_text
+            vars[:consumer_city]     = resp.at('consumerCity').inner_text
+            vars[:consumer_name]     = resp.at('consumerName').inner_text
           end
         end
         MollieIdealCheckResponse.new(success, message, vars)
