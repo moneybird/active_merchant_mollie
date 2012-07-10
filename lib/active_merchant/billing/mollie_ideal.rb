@@ -8,8 +8,8 @@ module ActiveMerchant
       
       def initialize(options={})
         requires!(options, :partner_id)
-        
         @options = options
+        super
       end
       
       def setup_purchase(money, options)
